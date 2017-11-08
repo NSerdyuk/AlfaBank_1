@@ -76,6 +76,8 @@ public class PhoneSamsung {
             c.printStackTrace();
         }
 
+        driverc.quit();
+
     }
 
 }

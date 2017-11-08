@@ -83,5 +83,7 @@ public class HeadPhones {
             c.printStackTrace();
         }
 
+        driverc.quit();
+
     }
 }

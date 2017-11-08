@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,26 +30,18 @@ public class AlfaBankJob {
         search.sendKeys("Альфа-Банк");
         search.submit();
 
+        Set<String> windowHandles = driver.getWindowHandles();
+
         //Переход на главную страницу сайта 'alfabank.ru/'
         WebElement alfaBank = driver.findElement(By.xpath("//div/h3/a[@href='https://alfabank.ru/']"));
         alfaBank.click();
 
-        /*try {
-            Thread.sleep(7000);*/
+        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        newTab.remove(windowHandles);
+        driver.switchTo().window(newTab.get(1));
 
-        /* На элементе 'jobAlfaBank' тест падает, не находит его на главной странице.
-        Испробовала массу вариантов поиска по xpath, css. В консоле браузера элемент успешно находится.
-        Если выполнить тест без поисковой системы, а сразу подгружать главную страницу, переход в раздел "Работайте у нас" -выполняется.
-        Пробовала добавить sleep/wait.until(ExpectedCondition), чтобы страница успела загрузиться - тоже не помогло.
 
-        Если вас не затруднит, могли бы вы в ответном письме выслать мне правильный вариант поиска этого элемента на главной странице 'https://alfabank.ru/'.
-        Спасибо.
-         */
-
-        WebElement jobAlfaBank = driver.findElement(By.xpath("//body/div/div/div/div/div/div/ul/li/a[@href='http://job.alfabank.ru/' and text()='Работайте у нас']"));
-        //body[@id='home_page']/div/div[6]/div/div/div/div[3]/ul/li[3]/a
-        // body/div/div/div/div/div/div/ul/li/a[@href='http://job.alfabank.ru/'
-        //WebElement jobAlfaBank = driver.findElement(By.cssSelector(".footer__nav-column>ul>li>a"));
+        WebElement jobAlfaBank = driver.findElement(By.xpath("//div/ul/li/a[@href='http://job.alfabank.ru/' and text()='Работайте у нас']"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", jobAlfaBank);
         jobAlfaBank.click();
 
@@ -71,8 +65,8 @@ public class AlfaBankJob {
         AlfaBankMethods alf = new AlfaBankMethods();
         alf.writeUsingFileWriter(ttl, txt);
 
+        driver.quit();
+
     }
 
-    /*catch (InterruptedException c){
-            c.printStackTrace();*/
 }
